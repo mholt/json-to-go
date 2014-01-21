@@ -6,13 +6,13 @@
 
 	A simple utility to translate JSON into a Go type definition.
 */
-	
+
 function jsonToGo(json, typename)
 {
 	var data;
 	var scope;
 	var go = "";
-	tabs = 0;
+	var tabs = 0;
 
 	try
 	{
