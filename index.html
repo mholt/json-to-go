@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>JSON-to-Go -- Convert JSON to Go type definitions</title>
+		<script src="json-to-go.js"></script>
+		<style>
+		#output {
+			white-space: pre;
+			font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+			font-size: 14px;
+			line-height: 1.5em;
+		}
+		</style>
+	</head>
+	<body>
+		<h1>JSON-to-Go</h1>
+		<p>
+			Translates JSON into a rough Go type definition.
+			<br>
+			Useful if you prefer to avoid <code>interface{}</code> and type assertions or writing the definitions yourself. (<a href="http://blog.golang.org/json-and-go" target="_blank">Read about JSON and Go.</a>)
+			<br>
+			The translator has to make some assumptions, so check the results (and use <code>go fmt</code>).
+		</p>
+		<input type="text" id="typename" placeholder="Name of type" size="40" value="ValidAddress">
+		<br>
+		<textarea rows="20" cols="75" id="input" placeholder="Paste valid JSON here">[
+	{
+		"input_index": 0,
+		"candidate_index": 0,
+		"addressee": "Apple Inc",
+		"delivery_line_1": "1 Infinite Loop",
+		"delivery_line_2": "PO Box 42",
+		"last_line": "Cupertino CA 95014-2083",
+		"delivery_point_barcode": "950142083017",
+		"components": {
+			"primary_number": "1",
+			"street_name": "Infinite",
+			"street_suffix": "Loop",
+			"city_name": "Cupertino",
+			"state_abbreviation": "CA",
+			"zipcode": "95014",
+			"plus4_code": "2083",
+			"delivery_point": "01",
+			"delivery_point_check_digit": "7"
+		},
+		"metadata": {
+			"record_type": "S",
+			"county_fips": "06085",
+			"county_name": "Santa Clara",
+			"carrier_route": "C067",
+			"congressional_district": "15",
+			"rdi": "Commercial",
+			"latitude": 37.33118,
+			"longitude": -122.03062,
+			"precision": "Zip9"
+		},
+		"analysis": {
+			"dpv_match_code": "Y",
+			"dpv_footnotes": "AABB",
+			"dpv_cmra": "N",
+			"dpv_vacant": "N",
+			"active": "Y"
+		}
+	},
+	{
+		"input_index": 0,
+		"candidate_index": 0,
+		"addressee": "Apple Inc",
+		"delivery_line_1": "1 Infinite Loop",
+		"delivery_line_2": "PO Box 42",
+		"last_line": "Cupertino CA 95014-2083",
+		"delivery_point_barcode": "950142083017",
+		"components": {
+			"primary_number": "1",
+			"street_name": "Infinite",
+			"street_suffix": "Loop",
+			"city_name": "Cupertino",
+			"state_abbreviation": "CA",
+			"zipcode": "95014",
+			"plus4_code": "2083",
+			"delivery_point": "01",
+			"delivery_point_check_digit": "7"
+		},
+		"metadata": {
+			"record_type": "S",
+			"county_fips": "06085",
+			"county_name": "Santa Clara",
+			"carrier_route": "C067",
+			"congressional_district": "15",
+			"rdi": "Commercial",
+			"latitude": 37.33118,
+			"longitude": -122.03062,
+			"precision": "Zip9"
+		},
+		"analysis": {
+			"dpv_match_code": "Y",
+			"dpv_footnotes": "AABB",
+			"dpv_cmra": "N",
+			"dpv_vacant": "N",
+			"active": "Y"
+		}
+	}
+]</textarea>
+		<br>
+		<i>(To demonstrate, the sample JSON is from <a href="http://smartystreets.com/products/liveaddress-api" target="_blank">LiveAddress API</a> by SmartyStreets.)</i>
+		<br><br>
+
+		<button id="convert" onclick="doConvert()">Convert</button>
+		
+		<br><br>
+		
+		<div id="output"></div>
+		
+		<br><br>
+		<hr>
+		<a href="https://github.com/mholt/json-to-go">JSON-to-Go on GitHub</a> by Matthew Holt
+
+		<script>
+		var nameElem = document.getElementById('typename');
+		var inputElem = document.getElementById('input');
+		var outputElem = document.getElementById('output');
+		function doConvert()
+		{
+			var result = jsonToGo(inputElem.value, nameElem.value);
+			outputElem.textContent = result.error ? "ERROR: " + result.error : result.go;
+		}
+		</script>
+	</body>
+</html>
