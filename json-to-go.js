@@ -42,7 +42,7 @@ function jsonToGo(json, typename)
 
 	function parseScope(scope)
 	{
-		if (typeof scope === "object")
+		if (typeof scope === "object" && scope !== null)
 		{
 			if (Array.isArray(scope))
 			{
@@ -104,6 +104,9 @@ function jsonToGo(json, typename)
 
 	function goType(val)
 	{
+		if (val === null)
+			return "interface{}";
+		
 		switch (typeof val)
 		{
 			case "string":
@@ -118,6 +121,8 @@ function jsonToGo(json, typename)
 				}
 				else
 					return "float32"
+			case "boolean":
+				return "bool";
 			case "object":
 				return "struct";
 			case "array":
