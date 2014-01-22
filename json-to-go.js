@@ -104,9 +104,9 @@ function jsonToGo(json, typename)
 
 	function goType(val)
 	{
-		if (val === null) {
+		if (val === null)
 			return "interface{}";
-		}
+		
 		switch (typeof val)
 		{
 			case "string":
