@@ -63,7 +63,7 @@ function jsonToGo(json, typename)
 				if (sliceType == "struct")
 					parseScope(scope[0]);
 				else
-					append(sliceType);
+					append(sliceType || "interface{}");
 			}
 			else
 			{
@@ -141,9 +141,7 @@ function jsonToGo(json, typename)
 				&& typ2.substr(0, 5) == "float")
 			return typ1;
 		else
-		{
 			return "interface{}";
-		}
 	}
 
 	// Thanks to http://stackoverflow.com/a/5574446/1048862
