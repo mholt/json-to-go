@@ -63,7 +63,7 @@ function jsonToGo(json, typename)
 				if (sliceType == "struct")
 					parseScope(scope[0]);
 				else
-					append(sliceType);
+					append(sliceType || "interface{}");
 			}
 			else
 			{
@@ -99,7 +99,16 @@ function jsonToGo(json, typename)
 
 	function format(str)
 	{
-		return toProperCase(str.replace(/\s/g, "_")).replace(/_/g, "");
+		if (str.match(/^\d+$/))
+			str = "Number" + str;
+		else if (str.charAt(0).match(/\d/))
+		{
+			var numbers = {'0': "Zero_", '1': "One_", '2': "Two_", '3': "Three_",
+				'4': "Four_", '5': "Five_", '6': "Six_", '7': "Seven_",
+				'8': "Eight_", '9': "Nine_"};
+			str = numbers[str.charAt(0)] + str.substr(1);
+		}
+		return toProperCase(str).replace(/\s|_/g, "");
 	}
 
 	function goType(val)
@@ -141,18 +150,21 @@ function jsonToGo(json, typename)
 				&& typ2.substr(0, 5) == "float")
 			return typ1;
 		else
-		{
 			return "interface{}";
-		}
 	}
 
-	// Thanks to http://stackoverflow.com/a/5574446/1048862
 	function toProperCase(str)
 	{
-		return str.replace(/[^_]*/gi, function(txt) 
+		if (str.length == 0)
+			return "";
+		
+		str = str.charAt(0).toUpperCase() + str.substr(1);
+
+		return str.replace(/[\s_][a-z]+/g, function(txt)
 		{
-			return txt.charAt(0).toUpperCase()
-					+ txt.substr(1).toLowerCase();
+			return txt.charAt(0)
+					+ txt.charAt(1).toUpperCase()
+					+ txt.substr(2).toLowerCase();
 		});
 	}
 }
