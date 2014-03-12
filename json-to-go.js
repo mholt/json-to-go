@@ -99,7 +99,7 @@ function jsonToGo(json, typename)
 
 	function format(str)
 	{
-		return toProperCase(str.replace(/\s/g, "_")).replace(/_/g, "");
+		return toProperCase(str).replace(/\s|_/g, "");
 	}
 
 	function goType(val)
@@ -144,13 +144,18 @@ function jsonToGo(json, typename)
 			return "interface{}";
 	}
 
-	// Thanks to http://stackoverflow.com/a/5574446/1048862
 	function toProperCase(str)
 	{
-		return str.replace(/[^_]*/gi, function(txt) 
+		if (str.length == 0)
+			return "";
+		
+		str = str.charAt(0).toUpperCase() + str.substr(1);
+
+		return str.replace(/[\s_][a-z]+/g, function(txt)
 		{
-			return txt.charAt(0).toUpperCase()
-					+ txt.substr(1).toLowerCase();
+			return txt.charAt(0)
+					+ txt.charAt(1).toUpperCase()
+					+ txt.substr(2).toLowerCase();
 		});
 	}
 }
