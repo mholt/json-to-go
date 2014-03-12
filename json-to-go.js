@@ -99,6 +99,15 @@ function jsonToGo(json, typename)
 
 	function format(str)
 	{
+		if (str.match(/^\d+$/))
+			str = "Number" + str;
+		else if (str.charAt(0).match(/\d/))
+		{
+			var numbers = {'0': "Zero_", '1': "One_", '2': "Two_", '3': "Three_",
+				'4': "Four_", '5': "Five_", '6': "Six_", '7': "Seven_",
+				'8': "Eight_", '9': "Nine_"};
+			str = numbers[str.charAt(0)] + str.substr(1);
+		}
 		return toProperCase(str).replace(/\s|_/g, "");
 	}
 
