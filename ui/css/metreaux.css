@@ -1,0 +1,279 @@
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800");
+/**
+ *  METREAUX TABLE . CSS
+ *
+ * Use:
+ *     Style rules to bring about a UI treatment
+ *     inspired by Windows 8 (formerly 'Metro UI')
+ *
+ *  Versions:
+ *      0.1 -- 06-December-2013
+ *
+ */
+/**
+ *  LESS Constants
+ *
+ */
+/**
+ *  GLOBAL rules of appearance
+ *
+ */
+/**
+ *  HEADINGS
+ *
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: #ffffff;
+  font-weight: 300;
+}
+h1 {
+  font-size: 2.5em;
+  line-height: 1.0;
+}
+h2 {
+  color: #EEEEEE;
+  font-size: 1.25em;
+  line-height: 1.2;
+}
+h3 {
+  color: #EEEEEE;
+  font-size: 1.25em;
+}
+h4 {
+  font-size: 1em;
+  font-weight: 400;
+}
+h5 {
+  font-size: .80em;
+  font-weight: 400;
+}
+h6,
+p {
+  font-size: .70em;
+  font-weight: 400;
+}
+p {
+  font-size: .625em;
+  font-weight: 300;
+  color: #e5e5e5;
+}
+/**
+ *  INPUT Placeholders
+ *
+ */
+::-webkit-input-placeholder {
+  font-style: italic;
+  font-size: .9em;
+  color: #999999;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-style: italic;
+  font-size: .9em;
+  color: #999999;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-style: italic;
+  font-size: .9em;
+  color: #999999;
+}
+:-ms-input-placeholder {
+  font-style: italic;
+  font-size: .9em;
+  color: #999999;
+}
+.ui.overlay,
+.ui.overlay.nested {
+  background-color: #000;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 500;
+}
+.ui.overlay.nested {
+  z-index: 1100;
+}
+.shade {
+  opacity: .25;
+}
+.ui.error,
+.ui.message {
+  width: 100%;
+}
+.ui.error section,
+.ui.message section {
+  height: auto;
+  left: 0;
+  position: absolute;
+  top: 13em;
+  width: 100%;
+  z-index: 150;
+}
+.ui.error section h1,
+.ui.message section h1,
+.ui.error section h2,
+.ui.message section h2,
+.ui.error section h3,
+.ui.message section h3,
+.ui.error section h4,
+.ui.message section h4,
+.ui.error section p,
+.ui.message section p {
+  color: #ffffff;
+  margin-left: 15%;
+  padding-left: 1.5em;
+  padding-top: 1.5em;
+  position: relative;
+}
+.ui.error section h1:before,
+.ui.message section h1:before,
+.ui.error section h2:before,
+.ui.message section h2:before {
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 1.5em;
+}
+.ui.error section p,
+.ui.message section p {
+  color: #DDDDDD;
+  font-size: .8em;
+  padding-left: 3em;
+  padding-top: .75em;
+}
+.ui.error section .group,
+.ui.message section .group {
+  text-align: center;
+}
+.ui.error section .group button,
+.ui.message section .group button {
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-size: .925em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding: .35em 1em;
+}
+.ui.error section .group button:hover,
+.ui.message section .group button:hover {
+  cursor: pointer;
+}
+.ui.error section {
+  background: rgba(145, 0, 0, 0.95);
+}
+.ui.error section h1:before,
+.ui.error section h2:before {
+  content: url(../img/error.png);
+}
+.ui.error section .group button {
+  background-color: #af0000;
+}
+.ui.error section .group button:hover {
+  background-color: #c80000;
+}
+.ui.message section {
+  background: #004400;
+}
+.ui.message section h1:before,
+.ui.message section h2:before {
+  content: url(../img/i.png);
+}
+.ui.message section .group button {
+  background-color: #006200;
+}
+.ui.message section .group button:hover {
+  background-color: #007600;
+}
+/*   UI entry   */
+.ui.entry,
+.ui.select,
+.ui.textarea {
+  border: 1px solid #444;
+  color: #000;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif !important;
+  font-size: 16pt;
+  height: 2em;
+  margin: 0;
+  padding: 3px;
+  width: 10em;
+}
+.ui.search {
+  min-width: 10em;
+  width: 15em;
+}
+.ui.entry:focus,
+.ui.select:focus,
+.ui.textarea:focus {
+  background-color: #fffacd;
+}
+.ui.postfix,
+.postfix {
+  background-color: #f4f4f4;
+  border: 1px solid #666666;
+  border-left: 0;
+  display: block;
+  float: left;
+  height: 2em;
+  line-height: 1.5em;
+  padding-top: 2px;
+  text-align: center;
+  width: 2em;
+}
+.postfix:hover {
+  background-color: #b9b9b9;
+}
+/**
+ *  Go Back element - navigation one page back
+*/
+.ui.back {
+  background: transparent url(../img/svg/arrow.left.circle.svg) 0 0 no-repeat;
+  background-size: 2.5em 2.5em;
+  color: orange;
+  height: 3em;
+  left: 1em;
+  opacity: .25;
+  position: absolute;
+  top: 115px;
+  width: 3em;
+  z-index: 50;
+}
+.ui.back a {
+  display: block;
+  height: 3em;
+  width: 3em;
+}
+.ui.back.subpage {
+  top: 72px;
+}
+.ui.back:hover {
+  cursor: pointer;
+  opacity: 1.0;
+}
+.ui.button.big {
+  background-color: #006200;
+  border: 2px solid #005800;
+  color: #ffffff;
+  cursor: pointer;
+  display: block;
+  font-size: .925em;
+  font-weight: 600;
+  height: 4em;
+  line-height: 3.6em;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  width: 10em;
+}
+.ui.button.big:hover {
+  background-color: #007600;
+}

@@ -1,0 +1,189 @@
+/**
+ *  * JSON-to-GO
+ * =============================================================================
+ *
+ */
+/*
+* Basic UI  ======================================================================
+*
+*/
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #14204d;
+  background: #14204d;
+  /* Old browsers */
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #14204d), color-stop(100%, #3cc8f4));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg, #14204d 0%, #3cc8f4 100%);
+  /* Chrome10+,Safari5.1+ */
+  /* Opera 11.10+ */
+  /* IE10+ */
+  background: linear-gradient(45deg, #14204d 0%, #3cc8f4 100%);
+  /* W3C */
+}
+input,
+button,
+textarea,
+select {
+  border-radius: none;
+}
+/**
+ *  Form elements   ============================================================
+ */
+.ui.button:hover {
+  cursor: pointer;
+}
+.ui.button,
+.ui.input,
+.ui.select,
+.ui.textarea {
+  border-radius: none;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  height: 2em;
+  line-height: 1em;
+  margin: 0 0 6px 0;
+  padding: 4px 8px;
+  width: 75%;
+}
+.ui.textarea {
+  background-color: #f3f3f3;
+  border: none;
+  height: 350px;
+  margin-top: 6px;
+  width: 100%;
+}
+.ui.inline.button,
+.ui.inline.input,
+.ui.inline.select {
+  float: left;
+}
+.ui.inline.button {
+  float: right;
+}
+.ui.button.medium,
+.ui.button.inline.medium,
+.ui.button.medium:hover,
+.ui.button.inline.medium:hover {
+  background-color: #AAAAAA;
+  border: 1px solid #AAAAAA;
+  color: #999999;
+  cursor: default;
+  width: 23%;
+}
+.ui.button.medium.convert,
+.ui.button.inline.medium.convert {
+  background-color: #5fa80e;
+  border: 1px solid #5fa80e;
+  color: #ffffff;
+}
+.ui.button.medium.convert:hover,
+.ui.button.inline.medium.convert:hover {
+  background-color: #008000;
+  border: 1px solid #008000;
+  cursor: pointer;
+}
+.ui.inline.button.reset {
+  background-color: #444444;
+  border: 1px solid #333333;
+  color: #999999;
+  width: 100%;
+}
+.ui.inline.button.reset:hover {
+  background-color: #111111;
+  border: 1px solid #000000;
+  color: #ffffff;
+  cursor: pointer;
+  width: 100%;
+}
+.ui.input:focus,
+.ui.select:focus,
+.ui.textarea:focus {
+  background-color: LemonChiffon;
+}
+.ui.json.go-type,
+.ui.json.code {
+  height: auto;
+  width: auto;
+}
+.more {
+  margin: 10px 0;
+}
+.read-more {
+  background-color: #87CEEB;
+  color: #333333;
+  cursor: pointer;
+  font-weight: 300;
+  margin-top: 3px;
+  padding: 4px 8px;
+  text-decoration: none;
+}
+.read-more:hover {
+  background-color: #71c5e7;
+  color: #000000;
+}
+.original {
+  color: #e3f988;
+  font-weight: 400;
+}
+/**
+ *  Animations   ===============================================================
+ */
+.ui.json.code.ng-show-add {
+  -webkit-animation: fadeIn 1s;
+          animation: fadeIn 1s;
+}
+.ui.golang.code.ng-show-add {
+  -webkit-animation: fadeIn 1s;
+          animation: fadeIn 1s;
+}
+.ui.json.code.ng-hide-add {
+  -webkit-animation: fadeOut 1s;
+          animation: fadeOut 1s;
+}
+.ui.golang.code.ng-hide-add {
+  -webkit-animation: fadeOut 1s;
+          animation: fadeOut 1s;
+}
+.csstransitions .fadeIn.ng-enter,
+.csstransitions .fadeIn.ng-leave,
+.csstransitions .slideLeft.ng-enter,
+.csstransitions .slideLeft.ng-leave,
+.csstransitions .slideRight.ng-enter,
+.csstransitions .slideRight.ng-leave {
+  -webkit-transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  /* easeOutExpo */
+  -webkit-transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  /* easeOutExpo */
+}
+.csstransitions .fadeIn.ng-enter.ng-enter-active {
+  -webkit-animation: fadeIn 1s;
+          animation: fadeIn 1s;
+}
+.csstransitions .fadeIn.ng-leave.ng-leave-active {
+  -webkit-animation: fadeOut 1s;
+          animation: fadeOut 1s;
+}
+.csstransitions .slideLeft.ng-enter {
+  left: 100%;
+}
+.csstransitions .slideLeft.ng-enter.ng-enter-active {
+  left: 0;
+}
+.csstransitions .slideLeft.ng-leave.ng-leave-active {
+  left: -100%;
+}
+.csstransitions .slideRight.ng-enter {
+  left: -100%;
+}
+.csstransitions .slideRight.ng-enter.ng-enter-active {
+  left: 0;
+}
+.csstransitions .slideRight.ng-leave.ng-leave-active {
+  left: 100%;
+}

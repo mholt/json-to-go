@@ -1,0 +1,142 @@
+/**
+ *  LAYOUT   ===================================================================
+ *
+ *  Use:
+ *      General page layout rules.
+ *
+ *  Versions:
+ *      0.1 - 06-Dec-2013
+ *
+ *   ===========================================================================
+ */
+/*
+  LESS CONTANTS
+ */
+/**
+ *  GLOBAL rules of layout
+ *
+ */
+/* Apply a natural box layout model to all elements */
+*,
+*:before,
+:before,
+*:after,
+:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html,
+body {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif !important;
+  font-size: 17pt !important;
+  height: 100%;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  margin: 0px;
+  min-width: 320px;
+  padding: 0px;
+  /*   UI horizontal menu   */
+}
+body .page,
+body .view {
+  left: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+body .page {
+  left: 120px;
+  top: 88px;
+}
+body .page.nohead {
+  top: 48px;
+}
+body .features,
+body .headlines {
+  position: relative;
+}
+body .ui.menu.horizontal {
+  color: #49504F;
+  height: 2em;
+  margin: .75em 0;
+  position: relative;
+}
+body .ui.menu.horizontal li {
+  border: 1px solid transparent;
+  color: #eee;
+  display: inline-block;
+  list-style: none;
+  margin: 0 .75em 0 0;
+  padding: 4px 10px;
+}
+body .ui.menu.horizontal li:hover {
+  cursor: pointer;
+  text-shadow: 1px 1px 1px #000000;
+}
+body .ui.menu.horizontal li.selected {
+  background-color: #00243e;
+  border: 1px solid #00243e;
+  color: #ffffff;
+}
+body .ui.menu.horizontal li:last-child {
+  margin-right: 0;
+}
+body .meta + .meta {
+  margin-top: 24px;
+}
+/**
+ *  UTILITY
+ *
+ */
+.align-text.right {
+  text-align: right;
+  padding-right: 15px;
+}
+.align-text.center {
+  text-align: center;
+}
+.black {
+  color: #000000;
+}
+.blocked {
+  display: block;
+  height: 1px;
+}
+.cited {
+  font-family: FreeMono, Courier, Arial, sans-serif;
+  font-weight: 400;
+}
+.clear {
+  clear: both;
+}
+.dark {
+  background-color: #BBBBBB !important;
+}
+.ellips {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.float.left {
+  float: left;
+}
+.float.right {
+  float: right;
+}
+.hide,
+.hidden {
+  display: none;
+}
+.pointer {
+  cursor: pointer;
+}
+.nudge-left {
+  padding-left: 5px;
+}
+.nudge-right {
+  padding-right: 5px;
+}
