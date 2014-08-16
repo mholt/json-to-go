@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" ng-app="Lims"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="en" ng-app="JsonToGo"> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>JSON-to-Go</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/app.min.css" />
+</head>
+<body>
+
+    <section class="page hidden nohead">
+        <div class="grid no-gutters">
+            <div class="unit whole">
+                <section class="headlines">
+                    <h1>JSON-to-Go</h1>
+                    <h3>Translate JSON into a rough Go type definition</h3>
+                </section>
+            </div>
+        </div>
+
+        <div class="grid no-gutters">
+            <div class="unit whole">
+                <section class="features">
+                    <ul class="ui menu horizontal float left">
+                        <li class="tab selected" id="json">JSON</li>
+                        <li class="tab" id="golang">Golang</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+        <div class="grid no-left-gutters">
+
+            <div class="unit two-fifths">
+
+                <section class="ui json go-type show">
+                    <input class="ui inline input" id="inputGoType" type="text" placeholder="Enter a Go type name here." tabindex="1">
+                    <button class="ui inline button medium convert" id="buttonConvert" tabindex="3">Convert</button>
+                    <div class="clear"></div>
+                </section>
+                <section class="ui json code show" id="codeJson" >
+                    <textarea class="ui textarea" id="jsoncode" placeholder="Enter JSON here." tabindex="2"></textarea>
+                </section>
+
+                <section class="ui golang go-type hide">
+                    <button class="ui inline button medium reset" id="buttonReset">Reset</button>
+                    <div class="clear"></div>
+                </section>
+                <section class="ui golang code hide" id="codeGolang">
+                    <textarea class="ui textarea" id="golangcode" placeholder="Grab the generated Go code here..."></textarea>
+                </section>
+
+            </div>
+
+            <div class="unit two-fifths push right">
+                <section class="meta">
+                    <h5>What's This All About?</h5>
+                    <p>This tool helps when you want to avoid <span class="cited"><b>interface{}</b></span> and type assertions or
+                    writing definitions by hand. The translater makes some assumptions, so be sure to check the results (and then use <span class="cited"><b>go fmt</b></span>.)</p>
+                    <p class="more"><a href="http://blog.golang.org/json-and-go" class="read-more" target="_goblog">Read more about JSON and Go</a></p>
+                </section>
+
+                <section class="meta">
+                    <h5>Usage</h5>
+                    <p>1. Type in a name for the Go type to generate.<br/>
+                    2. Paste in your JSON.<br/>
+                    3. Click the <b>Convert</b> button.</br>
+                    4. Grab your Go code from the <b>Golang</b> tab.<br/>
+                    5. Rinse and repeat.</p>
+                </section>
+
+                <section class="meta">
+                    <h5>Demo</h5>
+                    <p>For a demo, use the sample JSON from the <a class="original" href="http://smartystreets.com/products/liveaddress-api" target="_api">LiveAddress API</a> from <a class="original" href="http://smartystreets.com/" target="_vendor">SmartyStreets.</a></p>
+                    <p class="more">
+                        <a class="read-more" id="buttonLoadDemo">Load some demo JSON</a>
+                        <a class="read-more" id="buttonLoadDemo2">Load some other demo JSON</a>
+                    </p>
+                </section>
+
+                <section class="meta">
+                    <h5>Credits</h5>
+                    <p>The original concept, project, and translation goodness, by <b><a class="original" href="https://github.com/mholt/json-to-go" target="_holt">Matthew Holt</a></b></p>
+                    <p>The fork, with modern UI and behavior, by <b><a class="original" href="http://cssian.com" target="_cssian">CSSian</a></b></p>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIBRARY SCRIPTS -->
+    <script src="lib/jquery/jquery-1.11.1.min.js"></script>
+    <!-- APPLICATION SCRIPTS -->
+    <script src="js/ui.min.js"></script>
+    <script src="js/json-to-go.min.js"></script>
+</body>
+</html>
