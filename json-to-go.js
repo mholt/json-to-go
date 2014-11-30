@@ -27,15 +27,11 @@ function jsonToGo(json, typename)
 		};
 	}
 
-	typename = format(typename);
-
-	if (!typename)
-		typename = "GIVE_ME_A_NAME";
-
+	typename = format(typename || "GIVE_ME_A_NAME");
 	append("type "+typename+" ");
 
 	parseScope(scope);
-
+	
 	return { go: go };
 
 
