@@ -1,6 +1,3 @@
-[JSON-to-Go](https://mholt.github.io/json-to-go)
-==========
-
 [<img src="https://mholt.github.io/json-to-go/resources/images/json-to-go.png" alt="JSON-to-Go converts JSON to a Go struct"></a>](https://mholt.github.io/json-to-go)
 
 Translates JSON into a Go type definition. [Check it out!](http://mholt.github.io/json-to-go)
