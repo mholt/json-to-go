@@ -104,7 +104,7 @@ function jsonToGo(json, typename)
 				'8': "Eight_", '9': "Nine_"};
 			str = numbers[str.charAt(0)] + str.substr(1);
 		}
-		return toProperCase(str).replace(/\s|_/g, "");
+		return toProperCase(str).replace(/\s|_|-/g, "");
 	}
 
 	function goType(val)
@@ -159,7 +159,7 @@ function jsonToGo(json, typename)
 		
 		str = str.charAt(0).toUpperCase() + str.substr(1);
 
-		return str.replace(/[\s_][a-z]+/g, function(txt)
+		return str.replace(/[\s_-][a-z]+/g, function(txt)
 		{
 			return txt.charAt(0)
 					+ txt.charAt(1).toUpperCase()
