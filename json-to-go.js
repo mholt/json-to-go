@@ -154,16 +154,21 @@ function jsonToGo(json, typename)
 
 	function toProperCase(str)
 	{
-		if (str.length == 0)
-			return "";
-		
-		str = str.charAt(0).toUpperCase() + str.substr(1);
-
-		return str.replace(/[\s_-][a-z]+/g, function(txt)
+		// see github.com/golang/lint/lint.go
+		var commonInitialisms = [ 
+			"API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", 
+			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA", 
+			"SMTP", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", "URI", 
+			"URL", "UTF8", "VM", "XML", "XSRF", "XSS"
+		];
+	
+		return str.replace(/(^|[\s_-])([a-z]+)/g, function(unused, sep, frag)
 		{
-			return txt.charAt(0)
-					+ txt.charAt(1).toUpperCase()
-					+ txt.substr(2).toLowerCase();
+			if (commonInitialisms.indexOf(frag.toUpperCase()) >= 0) {
+				return sep + frag.toUpperCase();
+			} else {
+				return sep + frag[0].toUpperCase() + frag.substr(1).toLowerCase();
+			}
 		});
 	}
 }
