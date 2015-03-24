@@ -107,7 +107,7 @@ function jsonToGo(json, typename)
 				'8': "Eight_", '9': "Nine_"};
 			str = numbers[str.charAt(0)] + str.substr(1);
 		}
-		return toProperCase(str).replace(/[^a-z0-9]/ig, "");
+		return toProperCase(str).replace(/[^a-z0-9]/ig, "") || "NAMING_FAILED";
 	}
 
 	// Determines the most appropriate Go type
