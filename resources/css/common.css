@@ -14,7 +14,6 @@ body {
 code {
 	font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
 	padding: 0 3px;
-	font-size: 90%;
 }
 
 header {
@@ -44,7 +43,7 @@ p {
 
 #brand {
 	width: 45%;
-	max-width: 600px;
+	max-width: 500px;
 	float: right;
 	margin-left: 5%;
 }
