@@ -132,7 +132,7 @@ function jsonToGo(json, typename)
 						return "int64";
 				}
 				else
-					return "float64"
+					return "float64";
 			case "boolean":
 				return "bool";
 			case "object":
