@@ -127,12 +127,12 @@ function jsonToGo(json, typename)
 				if (val % 1 === 0)
 				{
 					if (val > -2147483648 && val < 2147483647)
-						return "int"
+						return "int";
 					else
-						return "int64"
+						return "int64";
 				}
 				else
-					return "float32"
+					return "float64";
 			case "boolean":
 				return "bool";
 			case "object":
