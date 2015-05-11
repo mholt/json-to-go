@@ -119,7 +119,7 @@ function jsonToGo(json, typename)
 		switch (typeof val)
 		{
 			case "string":
-				if (/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\+\d\d:\d\d/.test(val))
+				if (/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\+\d\d:\d\d|Z)/.test(val))
 					return "time.Time";
 				else
 					return "string";
