@@ -82,7 +82,7 @@ td {
 	border: none;
 	resize: vertical;
 	height: 500px;
-	height: 100vh;
+	height: 65vh;
 	overflow: scroll;
 	tab-size: 4;
 }
