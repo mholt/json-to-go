@@ -16,7 +16,7 @@ function jsonToGo(json, typename)
 
 	try
 	{
-		data = JSON.parse(json);
+		data = JSON.parse(json.replace(/\.0/g, ".1"));
 		scope = data;
 	}
 	catch (e)
@@ -119,7 +119,7 @@ function jsonToGo(json, typename)
 		switch (typeof val)
 		{
 			case "string":
-				if (/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\+\d\d:\d\d|Z)/.test(val))
+				if (/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(\+\d\d:\d\d|Z)/.test(val))
 					return "time.Time";
 				else
 					return "string";
