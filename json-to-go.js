@@ -16,7 +16,7 @@ function jsonToGo(json, typename)
 
 	try
 	{
-		data = JSON.parse(json.replace(/\.0/g, ".1"));
+		data = JSON.parse(json.replace(/\.0/g, ".1")); // hack that forces floats to stay as floats
 		scope = data;
 	}
 	catch (e)
