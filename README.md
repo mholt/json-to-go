@@ -2,6 +2,8 @@
 
 Translates JSON into a Go type definition. [Check it out!](http://mholt.github.io/json-to-go)
 
+This is a sister tool to [curl-to-Go](https://mholt.github.io/curl-to-go), which converts curl commands to Go code.
+
 Things to note:
 
 - The script sometimes has to make some assumptions, so give the output a once-over.
