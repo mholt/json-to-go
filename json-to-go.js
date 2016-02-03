@@ -167,13 +167,19 @@ function jsonToGo(json, typename)
 			"SMTP", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", "URI", 
 			"URL", "UTF8", "VM", "XML", "XSRF", "XSS"
 		];
-	
-		return str.replace(/(^|[^a-z])([a-z]+)/ig, function(unused, sep, frag)
+
+		return str.replace(/(^|[^a-zA-Z])([a-z]+)/g, function(unused, sep, frag)
 		{
 			if (commonInitialisms.indexOf(frag.toUpperCase()) >= 0)
 				return sep + frag.toUpperCase();
 			else
 				return sep + frag[0].toUpperCase() + frag.substr(1).toLowerCase();
+		}).replace(/([A-Z])([a-z]+)/g, function(unused, sep, frag)
+		{
+			if (commonInitialisms.indexOf(sep + frag.toUpperCase()) >= 0)
+				return (sep + frag).toUpperCase();
+			else
+				return sep + frag;
 		});
 	}
 }
