@@ -42,8 +42,9 @@ function jsonToGo(json, typename)
 		{
 			if (Array.isArray(scope))
 			{
-				var sliceType;
-				for (var i = 0; i < scope.length; i++)
+				var sliceType, scopeLength = scope.length;
+
+				for (var i = 0; i < scopeLength; i++)
 				{
 					var thisType = goType(scope[i]);
 					if (!sliceType)
@@ -55,31 +56,75 @@ function jsonToGo(json, typename)
 							break;
 					}
 				}
+
 				append("[]");
-				if (sliceType == "struct")
-					parseScope(scope[0]);
+				if (sliceType == "struct") {
+					var allFields = {};
+
+					// for each field counts how many times appears
+					for (var i = 0; i < scopeLength; i++)
+					{
+						var keys = Object.keys(scope[i])
+						for (var k in keys)
+						{
+							var keyname = keys[k];
+							if (!(keyname in allFields)) {
+								allFields[keyname] = {
+									value: scope[i][keyname],
+									count: 0
+								}
+							}
+
+							allFields[keyname].count++;
+						}
+					}
+					
+					// create a common struct with all fields found in the current array
+					// omitempty dict indicates if a field is optional
+					var keys = Object.keys(allFields), struct = {}, omitempty = {};
+					for (var k in keys)
+					{
+						var keyname = keys[k], elem = allFields[keyname];
+
+						struct[keyname] = elem.value;
+						omitempty[keyname] = elem.count != scopeLength;
+					}
+
+					parseStruct(struct, omitempty); // finally parse the struct !!
+				}
 				else
 					append(sliceType || "interface{}");
 			}
 			else
 			{
-				append("struct {\n");
-				++tabs;
-				var keys = Object.keys(scope);
-				for (var i in keys)
-				{
-					var keyname = keys[i];
-					indent(tabs);
-					append(format(keyname)+" ");
-					parseScope(scope[keyname]);
-					append(' `json:"'+keyname+'"`\n');
-				}
-				indent(--tabs);
-				append("}");
+				parseStruct(scope);
 			}
 		}
 		else
 			append(goType(scope));
+	}
+
+	function parseStruct(scope, omitempty)
+	{
+		append("struct {\n");
+		++tabs;
+		var keys = Object.keys(scope);
+		for (var i in keys)
+		{
+			var keyname = keys[i];
+			indent(tabs);
+			append(format(keyname)+" ");
+			parseScope(scope[keyname]);
+
+			append(' `json:"'+keyname);
+			if (omitempty && omitempty[keyname] === true)
+			{
+				append(',omitempty');
+			}
+			append('"`\n');
+		}
+		indent(--tabs);
+		append("}");
 	}
 
 	function indent(tabs)
