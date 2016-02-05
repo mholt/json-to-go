@@ -31,7 +31,7 @@ function jsonToGo(json, typename)
 	append("type "+typename+" ");
 
 	parseScope(scope);
-	
+
 	return { go: go };
 
 
@@ -42,8 +42,9 @@ function jsonToGo(json, typename)
 		{
 			if (Array.isArray(scope))
 			{
-				var sliceType;
-				for (var i = 0; i < scope.length; i++)
+				var sliceType, scopeLength = scope.length;
+
+				for (var i = 0; i < scopeLength; i++)
 				{
 					var thisType = goType(scope[i]);
 					if (!sliceType)
@@ -55,31 +56,75 @@ function jsonToGo(json, typename)
 							break;
 					}
 				}
+
 				append("[]");
-				if (sliceType == "struct")
-					parseScope(scope[0]);
+				if (sliceType == "struct") {
+					var allFields = {};
+
+					// for each field counts how many times appears
+					for (var i = 0; i < scopeLength; i++)
+					{
+						var keys = Object.keys(scope[i])
+						for (var k in keys)
+						{
+							var keyname = keys[k];
+							if (!(keyname in allFields)) {
+								allFields[keyname] = {
+									value: scope[i][keyname],
+									count: 0
+								}
+							}
+
+							allFields[keyname].count++;
+						}
+					}
+
+					// create a common struct with all fields found in the current array
+					// omitempty dict indicates if a field is optional
+					var keys = Object.keys(allFields), struct = {}, omitempty = {};
+					for (var k in keys)
+					{
+						var keyname = keys[k], elem = allFields[keyname];
+
+						struct[keyname] = elem.value;
+						omitempty[keyname] = elem.count != scopeLength;
+					}
+
+					parseStruct(struct, omitempty); // finally parse the struct !!
+				}
 				else
 					append(sliceType || "interface{}");
 			}
 			else
 			{
-				append("struct {\n");
-				++tabs;
-				var keys = Object.keys(scope);
-				for (var i in keys)
-				{
-					var keyname = keys[i];
-					indent(tabs);
-					append(format(keyname)+" ");
-					parseScope(scope[keyname]);
-					append(' `json:"'+keyname+'"`\n');
-				}
-				indent(--tabs);
-				append("}");
+				parseStruct(scope);
 			}
 		}
 		else
 			append(goType(scope));
+	}
+
+	function parseStruct(scope, omitempty)
+	{
+		append("struct {\n");
+		++tabs;
+		var keys = Object.keys(scope);
+		for (var i in keys)
+		{
+			var keyname = keys[i];
+			indent(tabs);
+			append(format(keyname)+" ");
+			parseScope(scope[keyname]);
+
+			append(' `json:"'+keyname);
+			if (omitempty && omitempty[keyname] === true)
+			{
+				append(',omitempty');
+			}
+			append('"`\n');
+		}
+		indent(--tabs);
+		append("}");
 	}
 
 	function indent(tabs)
@@ -115,7 +160,7 @@ function jsonToGo(json, typename)
 	{
 		if (val === null)
 			return "interface{}";
-		
+
 		switch (typeof val)
 		{
 			case "string":
@@ -162,18 +207,24 @@ function jsonToGo(json, typename)
 	{
 		// https://github.com/golang/lint/blob/39d15d55e9777df34cdffde4f406ab27fd2e60c0/lint.go#L695-L731
 		var commonInitialisms = [
-			"API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", 
-			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA", 
-			"SMTP", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", "URI", 
+			"API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP",
+			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA",
+			"SMTP", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", "URI",
 			"URL", "UTF8", "VM", "XML", "XSRF", "XSS"
 		];
-	
-		return str.replace(/(^|[^a-z])([a-z]+)/ig, function(unused, sep, frag)
+
+		return str.replace(/(^|[^a-zA-Z])([a-z]+)/g, function(unused, sep, frag)
 		{
 			if (commonInitialisms.indexOf(frag.toUpperCase()) >= 0)
 				return sep + frag.toUpperCase();
 			else
 				return sep + frag[0].toUpperCase() + frag.substr(1).toLowerCase();
+		}).replace(/([A-Z])([a-z]+)/g, function(unused, sep, frag)
+		{
+			if (commonInitialisms.indexOf(sep + frag.toUpperCase()) >= 0)
+				return (sep + frag).toUpperCase();
+			else
+				return sep + frag;
 		});
 	}
 }
