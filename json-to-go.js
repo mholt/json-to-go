@@ -231,3 +231,14 @@ function jsonToGo(json, typename)
 		});
 	}
 }
+
+if (typeof module != 'undefined') {
+    if (!module.parent) {
+        process.stdin.on('data', function(buf) {
+            var json = buf.toString('utf8')
+            console.log(jsonToGo(json).go)
+        })
+    } else {
+        module.exports = jsonToGo
+    }
+}
