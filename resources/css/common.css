@@ -111,6 +111,11 @@ footer {
 	clear: both;
 }
 
+.clipboard {
+	position: absolute;
+	right: 0;
+}
+
 
 @media (max-width: 1000px) {
 	header {

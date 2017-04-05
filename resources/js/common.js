@@ -18,6 +18,9 @@ $(function()
 	var formattedEmptyInputMsg = '<span style="color: #777;">'+emptyInputMsg+'</span>';
 	var formattedEmptyOutputMsg = '<span style="color: #777;">'+emptyOutputMsg+'</span>';
 
+	// Initialiize clipboard.js
+	new Clipboard('.clipboard');
+
 	// Hides placeholder text
 	$('#input').on('focus', function()
 	{
