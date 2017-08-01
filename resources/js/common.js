@@ -58,7 +58,10 @@ $(function()
 			$('#output').html('<span class="clr-red">'+output.error+'</span>');
 		else
 		{
-			var coloredOutput = hljs.highlight("go", output.go);
+			var finalOutput = output.go;
+			if (typeof gofmt === 'function')
+				finalOutput = gofmt(output.go);
+			var coloredOutput = hljs.highlight("go", finalOutput);
 			$('#output').html(coloredOutput.value);
 		}
 	});
