@@ -79,7 +79,9 @@ $(function()
 		{
 			var range = document.createRange();
 			range.selectNode(this);
-			window.getSelection().addRange(range);
+			var sel = window.getSelection();
+			sel.removeAllRanges(); // required as of Chrome 60: https://www.chromestatus.com/features/6680566019653632
+			sel.addRange(range);
 		}
 	});
 
