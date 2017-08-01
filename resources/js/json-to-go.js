@@ -31,7 +31,7 @@ function jsonToGo(json, typename)
 	append("type "+typename+" ");
 
 	parseScope(scope);
-
+	
 	return { go: go };
 
 
@@ -78,7 +78,7 @@ function jsonToGo(json, typename)
 							allFields[keyname].count++;
 						}
 					}
-
+					
 					// create a common struct with all fields found in the current array
 					// omitempty dict indicates if a field is optional
 					var keys = Object.keys(allFields), struct = {}, omitempty = {};
@@ -91,6 +91,9 @@ function jsonToGo(json, typename)
 					}
 
 					parseStruct(struct, omitempty); // finally parse the struct !!
+				}
+				else if (sliceType == "slice") {
+					parseScope(scope[0])
 				}
 				else
 					append(sliceType || "interface{}");
@@ -160,7 +163,7 @@ function jsonToGo(json, typename)
 	{
 		if (val === null)
 			return "interface{}";
-
+		
 		switch (typeof val)
 		{
 			case "string":
@@ -181,9 +184,9 @@ function jsonToGo(json, typename)
 			case "boolean":
 				return "bool";
 			case "object":
+				if (Array.isArray(val))
+					return "slice";
 				return "struct";
-			case "array":
-				return "slice";
 			default:
 				return "interface{}";
 		}
@@ -207,9 +210,9 @@ function jsonToGo(json, typename)
 	{
 		// https://github.com/golang/lint/blob/39d15d55e9777df34cdffde4f406ab27fd2e60c0/lint.go#L695-L731
 		var commonInitialisms = [
-			"API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP",
-			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA",
-			"SMTP", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", "URI",
+			"API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", 
+			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA", 
+			"SMTP", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", "URI", 
 			"URL", "UTF8", "VM", "XML", "XSRF", "XSS"
 		];
 
@@ -227,4 +230,15 @@ function jsonToGo(json, typename)
 				return sep + frag;
 		});
 	}
+}
+
+if (typeof module != 'undefined') {
+    if (!module.parent) {
+        process.stdin.on('data', function(buf) {
+            var json = buf.toString('utf8')
+            console.log(jsonToGo(json).go)
+        })
+    } else {
+        module.exports = jsonToGo
+    }
 }
