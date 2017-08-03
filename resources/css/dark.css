@@ -1,0 +1,27 @@
+/* 
+Dark mode written by github.com/fronbasal 
+*/
+
+body {
+    background: #222;
+    color: #eee;
+}
+
+img#brand {
+    filter: invert(0.867);
+}
+
+div#input {
+    background: #222;
+    color: #eee;
+    border-right: 2px solid #375EAB;
+}
+
+div#output {
+    background: #222;
+}
+
+a {
+    text-decoration: none;
+    color: #26BE7F;
+}
