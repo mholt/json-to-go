@@ -94,6 +94,21 @@ $(function()
 	{
 		$('#input').text(stringify(sampleJson2)).keyup();
 	});
+
+	var dark = false;
+	$("#dark").click(function()
+	{
+		if(!dark)
+		{
+			$("head").append("<link rel='stylesheet' href='resources/css/dark.css' id='dark-css'>");
+			$("#dark").html("light mode");
+		} else
+		{
+			$("#dark-css").remove();
+			$("#dark").html("dark mode");
+		}
+		dark = !dark;
+	});
 });
 
 // Stringifies JSON in the preferred manner
