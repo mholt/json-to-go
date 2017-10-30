@@ -106,6 +106,14 @@ footer {
 .clr-red {
 	color: #CC0000;
 }
+.faulty-line {
+	color: #C00;
+	background: #FDD;
+	font-weight: bold
+}
+.json-go-faulty-char  {
+	border: 1px solid purple;
+}
 
 .clear {
 	clear: both;

@@ -54,8 +54,16 @@ $(function()
 
 		var output = jsonToGo(input);
 
-		if (output.error)
+		if (output.error) {
 			$('#output').html('<span class="clr-red">'+output.error+'</span>');
+			var parsedError = output.error.match(/Unexpected token .+ in JSON at position (\d+)/);
+			if(parsedError) {
+				try { 
+					var faultyIndex = parsedError.length == 2 && parsedError[1] && parseInt(parsedError[1]);
+					faultyIndex && $('#output').html(constructJSONErrorHTML(output.error, faultyIndex, input));
+				} catch(e) {}
+			}
+		}
 		else
 		{
 			var finalOutput = output.go;
@@ -110,6 +118,23 @@ $(function()
 		dark = !dark;
 	});
 });
+
+function constructJSONErrorHTML(rawErrorMessage, errorIndex, json) {
+	var errorHeading = '<p><span class="clr-red">'+ rawErrorMessage +'</span><p>';
+	var markedPart = '<span class="json-go-faulty-char">' + json[errorIndex] + '</span>';
+	var markedJsonString = [json.slice(0, errorIndex), markedPart, json.slice(errorIndex+1)].join('');
+	var jsonStringLines = markedJsonString.split(/\n/);
+	for(var i = 0; i < jsonStringLines.length; i++) {
+
+		if(jsonStringLines[i].indexOf('<span class="json-go-faulty-char">') > -1)  // faulty line
+			var wrappedLine = '<div class="faulty-line">' + jsonStringLines[i] + '</div>';
+		else 
+			var wrappedLine = '<div>' + jsonStringLines[i] + '</div>';
+
+		jsonStringLines[i] = wrappedLine;
+	}
+	return (errorHeading + jsonStringLines.join(''));
+}
 
 // Stringifies JSON in the preferred manner
 function stringify(json)
