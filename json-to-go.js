@@ -200,7 +200,7 @@ function jsonToGo(json, typename)
 			return typ1;
 		else if (typ1.substr(0, 3) == "int"
 				&& typ2.substr(0, 5) == "float")
-			return typ1;
+			return typ2;
 		else
 			return "interface{}";
 	}
