@@ -287,12 +287,12 @@ function jsonToGo(json, typename, flatten = true)
 	// Proper cases a string according to Go conventions
 	function toProperCase(str)
 	{
-		// https://github.com/golang/lint/blob/39d15d55e9777df34cdffde4f406ab27fd2e60c0/lint.go#L695-L731
+		// https://github.com/golang/lint/blob/5614ed5bae6fb75893070bdc0996a68765fdd275/lint.go#L771-L810
 		const commonInitialisms = [
-			"API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP",
-			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA",
-			"SMTP", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", "URI",
-			"URL", "UTF8", "VM", "XML", "XSRF", "XSS"
+			"ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", 
+			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA", 
+			"SMTP", "SQL", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "UID", "UUID", 
+			"URI", "URL", "UTF8", "VM", "XML", "XMPP", "XSRF", "XSS"
 		];
 
 		return str.replace(/(^|[^a-zA-Z])([a-z]+)/g, function(unused, sep, frag)
