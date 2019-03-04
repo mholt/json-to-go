@@ -23,23 +23,33 @@
 	<body>
 		<header>
 			<div class="intro">
-				<h1>JSON-to-Go</h1>
-				<h2>Convert JSON to Go struct</h2>
-				<p>
-					This tool instantly converts JSON into a Go type definition. Paste a JSON structure on the left and the equivalent Go type will be generated to the right, which you can paste into your program. The script has to make some assumptions, so double-check the output!
-				</p>
-				<p>
-					For an example, try converting JSON from the <a href="javascript:" id="sample1">SmartyStreets API</a> or the <a href="javascript:" id="sample2"> GitHub API</a>.
-				</p>
+				<div class="title">
+					<h1>JSON-to-Go</h1>
+					<h2>Convert JSON to Go struct</h2>
+				</div>
+				<div>
+					<p>
+						This tool instantly converts JSON into a Go type definition. Paste a JSON structure on the left and the equivalent Go type will be generated to the right, which you can paste into your program. The script has to make some assumptions, so double-check the output!
+					</p>
+					<p>
+						For an example, try converting JSON from the <a href="javascript:" id="sample1">SmartyStreets API</a> or the <a href="javascript:" id="sample2">GitHub API</a>.
+					</p>
+					<p>
+						&copy; 2015 <a href="https://matt.life">Matt Holt</a> (<a href="https://twitter.com/mholt6">@mholt6</a>)
+						&bull; <a href="https://github.com/mholt/json-to-go">View on GitHub</a>
+						&bull; <a href="javascript:" id="dark">Dark mode</a>
+					</p>
+				</div>
+				<div>
+					<img src="resources/images/json-to-go.png" id="brand">
+				</div>
 			</div>
-			<img src="resources/images/json-to-go.png" id="brand">
-			<div class="clear"></div>
 		</header>
 		<table>
 			<tr>
 				<th style="width: 45%;">JSON</th>
 				<th style="width: 10%; font-size: 22px;">&#8594;</th>
-				<th style="width: 45%;">Go</th>
+				<th style="width: 45%;">Go <label><input type="checkbox" id="inline" checked>Inline type definitions</label></th>
 			</tr>
 		</table>
 		<table>
@@ -54,7 +64,7 @@
 		</table>
 
 		<footer>
-			&copy; 2015 Matt Holt - <a href="https://github.com/mholt/json-to-go">View on GitHub</a> - <a href="javascript:" id="dark">dark mode</a>
+			&copy; 2015 Matt Holt
 			<br>
 			The Go Gopher artwork is a derivative of that by Renee French.
 		</footer>

@@ -13,10 +13,43 @@ function initAnalytics()
 
 $(function()
 {
-	var emptyInputMsg = "Paste JSON here";
-	var emptyOutputMsg = "Go will appear here";
-	var formattedEmptyInputMsg = '<span style="color: #777;">'+emptyInputMsg+'</span>';
-	var formattedEmptyOutputMsg = '<span style="color: #777;">'+emptyOutputMsg+'</span>';
+	const emptyInputMsg = "Paste JSON here";
+	const emptyOutputMsg = "Go will appear here";
+	const formattedEmptyInputMsg = '<span style="color: #777;">'+emptyInputMsg+'</span>';
+	const formattedEmptyOutputMsg = '<span style="color: #777;">'+emptyOutputMsg+'</span>';
+
+	function doConversion()
+	{
+		var input = $('#input').text().trim();
+		if (!input || input == emptyInputMsg)
+		{
+			$('#output').html(formattedEmptyOutputMsg);
+			return;
+		}
+
+		let output = jsonToGo(input, "", !$('#inline').is(':checked'), false);
+
+		if (output.error)
+		{
+			$('#output').html('<span class="clr-red">'+output.error+'</span>');
+			console.log("ERROR:", output, output.error);
+			var parsedError = output.error.match(/Unexpected token .+ in JSON at position (\d+)/);
+			if (parsedError) {
+				try {
+					var faultyIndex = parsedError.length == 2 && parsedError[1] && parseInt(parsedError[1]);
+					faultyIndex && $('#output').html(constructJSONErrorHTML(output.error, faultyIndex, input));
+				} catch(e) {}
+			}
+		}
+		else
+		{
+			var finalOutput = output.go;
+			if (typeof gofmt === 'function')
+				finalOutput = gofmt(output.go);
+			var coloredOutput = hljs.highlight("go", finalOutput);
+			$('#output').html(coloredOutput.value);
+		}
+	}
 
 	// Hides placeholder text
 	$('#input').on('focus', function()
@@ -42,37 +75,27 @@ $(function()
 		}
 	}).blur();
 
-	// Automatically do the conversion
-	$('#input').keyup(function()
+	// If tab is pressed, insert a tab instead of focusing on next element
+	$('#input').keydown(function(e)
 	{
-		var input = $(this).text();
-		if (!input)
+		if (e.keyCode == 9)
 		{
-			$('#output').html(formattedEmptyOutputMsg);
-			return;
-		}
-
-		var output = jsonToGo(input);
-
-		if (output.error) {
-			$('#output').html('<span class="clr-red">'+output.error+'</span>');
-			var parsedError = output.error.match(/Unexpected token .+ in JSON at position (\d+)/);
-			if(parsedError) {
-				try { 
-					var faultyIndex = parsedError.length == 2 && parsedError[1] && parseInt(parsedError[1]);
-					faultyIndex && $('#output').html(constructJSONErrorHTML(output.error, faultyIndex, input));
-				} catch(e) {}
-			}
-		}
-		else
-		{
-			var finalOutput = output.go;
-			if (typeof gofmt === 'function')
-				finalOutput = gofmt(output.go);
-			var coloredOutput = hljs.highlight("go", finalOutput);
-			$('#output').html(coloredOutput.value);
+			document.execCommand('insertHTML', false, '&#009'); // insert tab
+			e.preventDefault(); // don't go to next element
 		}
 	});
+
+	// Automatically do the conversion on paste or change
+	$('#input').keyup(function()
+	{
+		doConversion();
+	});
+
+	// Also do conversion when inlining preference changes
+	$('#inline').change(function()
+	{
+		doConversion();
+	})
 
 	// Highlights the output for the user
 	$('#output').click(function()

@@ -1,4 +1,4 @@
-var CACHE = "v1"
+var CACHE = "v1.1"
 
 var filesToCache = [
     './',

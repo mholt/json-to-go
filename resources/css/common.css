@@ -17,12 +17,15 @@ code {
 }
 
 header {
-	padding: 2%;
+	padding: 20px;
 }
 
 .intro {
-	width: 50%;
-	float: left;
+	display: flex;
+}
+
+.intro > div {
+	width: 33.333%;
 }
 
 h1 {
@@ -41,11 +44,14 @@ p {
 	line-height: 1.5em;
 }
 
+p:first-child {
+	margin-top: 0;
+}
+
 #brand {
-	width: 45%;
-	max-width: 500px;
+	max-width: 400px;
+	max-height: 150px;
 	float: right;
-	margin-left: 5%;
 }
 
 table {
@@ -59,6 +65,12 @@ th {
 	text-align: center;
 	color: #FFF;
 	font-size: 20px;
+}
+
+th label {
+	margin-left: 1em;
+	font-size: 14px;
+	cursor: pointer;
 }
 
 td {
@@ -99,7 +111,7 @@ td {
 footer {
 	color: #888;
 	text-align: center;
-	padding: 75px 0 50px;
+	padding: 25px 0 50px;
 	line-height: 2em;
 }
 
@@ -115,24 +127,18 @@ footer {
 	border: 1px solid purple;
 }
 
-.clear {
-	clear: both;
-}
-
-
-@media (max-width: 1000px) {
-	header {
-		padding: 4%;
+@media (max-width: 800px) {
+	.intro {
+		flex-direction: column;
 	}
 
-	.intro,
-	#brand {
-		float: none;
+	.intro > div {
 		width: 100%;
 	}
 
 	#brand {
-		margin: 40px auto;
+		float: none;
+		margin: 20px auto;
 		display: block;
 	}
 }
