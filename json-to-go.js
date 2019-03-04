@@ -14,9 +14,10 @@ function jsonToGo(json, typename, flatten = true)
 	let go = "";
 	let tabs = 0;
 
+	const seen = [];
+	const stack = [];
 	let accumulator = "";
 	let innerTabs = 0;
-	let stack = [];
 	let parent = "";
 
 	try
@@ -149,7 +150,13 @@ function jsonToGo(json, typename, flatten = true)
 
 		if (flatten && depth >= 2)
 		{
-			appender(`type ${parent} ` + "struct {\n");
+			const parentType = `type ${parent}`;
+			if (seen.includes(parentType)) {
+				stack.pop();
+				return
+			}
+			seen.push(parentType);
+			appender(`${parentType} struct {\n`);
 			++innerTabs;
 			const keys = Object.keys(scope);
 			for (let i in keys)
