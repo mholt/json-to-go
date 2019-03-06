@@ -67,10 +67,14 @@ function jsonToGo(json, typename, flatten = true)
 					}
 				}
 
+				const slice = flatten && ["struct", "slice"].includes(sliceType)
+					? `[]${parent}`
+					: `[]`;
+
 				if (flatten && depth >= 2)
-					appender("[]");
+					appender(slice);
 				else
-					append("[]")
+					append(slice)
 				if (sliceType == "struct") {
 					const allFields = {};
 
@@ -129,7 +133,7 @@ function jsonToGo(json, typename, flatten = true)
 			}
 		}
 		else {
-			if (depth >= 2){
+			if (flatten && depth >= 2){
 				appender(goType(scope));
 			}
 			else {
