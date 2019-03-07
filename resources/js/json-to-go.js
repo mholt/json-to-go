@@ -14,9 +14,10 @@ function jsonToGo(json, typename, flatten = true)
 	let go = "";
 	let tabs = 0;
 
+	const seen = [];
+	const stack = [];
 	let accumulator = "";
 	let innerTabs = 0;
-	let stack = [];
 	let parent = "";
 
 	try
@@ -36,8 +37,6 @@ function jsonToGo(json, typename, flatten = true)
 	append(`type ${typename} `);
 
 	parseScope(scope);
-	
-	go = go.trim();
 
 	return {
 		go: flatten
@@ -68,10 +67,14 @@ function jsonToGo(json, typename, flatten = true)
 					}
 				}
 
+				const slice = flatten && ["struct", "slice"].includes(sliceType)
+					? `[]${parent}`
+					: `[]`;
+
 				if (flatten && depth >= 2)
-					appender("[]");
+					appender(slice);
 				else
-					append("[]")
+					append(slice)
 				if (sliceType == "struct") {
 					const allFields = {};
 
@@ -130,7 +133,7 @@ function jsonToGo(json, typename, flatten = true)
 			}
 		}
 		else {
-			if (depth >= 2){
+			if (flatten && depth >= 2){
 				appender(goType(scope));
 			}
 			else {
@@ -151,16 +154,22 @@ function jsonToGo(json, typename, flatten = true)
 
 		if (flatten && depth >= 2)
 		{
-			appender(`\ntype ${parent} ` + "struct {\n");
+			const parentType = `type ${parent}`;
+			if (seen.includes(parentType)) {
+				stack.pop();
+				return
+			}
+			seen.push(parentType);
+			appender(`${parentType} struct {\n`);
 			++innerTabs;
 			const keys = Object.keys(scope);
 			for (let i in keys)
 			{
 				const keyname = keys[i];
-				indenter(innerTabs);
+				indenter(innerTabs)
 				const typename = format(keyname)
 				appender(typename+" ");
-				parent = typename;
+				parent = typename
 				parseScope(scope[keyname], depth);
 				appender(' `json:"'+keyname);
 				if (omitempty && omitempty[keyname] === true)
@@ -183,8 +192,9 @@ function jsonToGo(json, typename, flatten = true)
 				indent(tabs);
 				const typename = format(keyname);
 				append(typename+" ");
-				parent = typename;
+				parent = typename
 				parseScope(scope[keyname], depth);
+
 				append(' `json:"'+keyname);
 				if (omitempty && omitempty[keyname] === true)
 				{
@@ -235,7 +245,7 @@ function jsonToGo(json, typename, flatten = true)
 				'8': "Eight_", '9': "Nine_"};
 			str = numbers[str.charAt(0)] + str.substr(1);
 		}
-		return toProperCase(str, true).replace(/[^a-z0-9]/ig, "") || "NAMING_FAILED";
+		return toProperCase(str).replace(/[^a-z0-9]/ig, "") || "NAMING_FAILED";
 	}
 
 	// Determines the most appropriate Go type
@@ -288,7 +298,7 @@ function jsonToGo(json, typename, flatten = true)
 	// Proper cases a string according to Go conventions
 	function toProperCase(str)
 	{
-		// https://github.com/golang/lint/blob/39d15d55e9777df34cdffde4f406ab27fd2e60c0/lint.go#L695-L731
+		// https://github.com/golang/lint/blob/5614ed5bae6fb75893070bdc0996a68765fdd275/lint.go#L771-L810
 		const commonInitialisms = [
 			"ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", 
 			"HTTPS", "ID", "IP", "JSON", "LHS", "QPS", "RAM", "RHS", "RPC", "SLA", 
