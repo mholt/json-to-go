@@ -14,7 +14,7 @@ function jsonToGo(json, typename, flatten = true)
 	let go = "";
 	let tabs = 0;
 
-	const seen = [];
+	const seen = {};
 	const stack = [];
 	let accumulator = "";
 	let innerTabs = 0;
@@ -84,14 +84,31 @@ function jsonToGo(json, typename, flatten = true)
 						const keys = Object.keys(scope[i])
 						for (let k in keys)
 						{
-							const keyname = keys[k];
+							let keyname = keys[k];
 							if (!(keyname in allFields)) {
 								allFields[keyname] = {
 									value: scope[i][keyname],
 									count: 0
 								}
 							}
+							else {
+								const existingValue = allFields[keyname].value;
+								const currentValue = scope[i][keyname];
 
+								if (compareObjects(existingValue, currentValue)) {
+									const comparisonResult = compareObjectKeys(
+										Object.keys(currentValue),
+										Object.keys(existingValue)
+									)
+									if (!comparisonResult) {
+										keyname = `${keyname}_${uuidv4()}`;
+										allFields[keyname] = {
+											value: currentValue,
+											count: 0
+										};
+									}
+								}
+							}
 							allFields[keyname].count++;
 						}
 					}
@@ -155,24 +172,30 @@ function jsonToGo(json, typename, flatten = true)
 		if (flatten && depth >= 2)
 		{
 			const parentType = `type ${parent}`;
-			if (seen.includes(parentType)) {
+			const scopeKeys = formatScopeKeys(Object.keys(scope));
+
+			// this can only handle two duplicate items
+			// future improvement will handle the case where there could
+			// three or more duplicate keys with different values
+			if (parent in seen && compareObjectKeys(scopeKeys, seen[parent])) {
 				stack.pop();
 				return
 			}
-			seen.push(parentType);
+			seen[parent] = scopeKeys;
+
 			appender(`${parentType} struct {\n`);
 			++innerTabs;
 			const keys = Object.keys(scope);
 			for (let i in keys)
 			{
-				const keyname = keys[i];
+				const keyname = getOriginalName(keys[i]);
 				indenter(innerTabs)
 				const typename = format(keyname)
 				appender(typename+" ");
 				parent = typename
-				parseScope(scope[keyname], depth);
+				parseScope(scope[keys[i]], depth);
 				appender(' `json:"'+keyname);
-				if (omitempty && omitempty[keyname] === true)
+				if (omitempty && omitempty[keys[i]] === true)
 				{
 					appender(',omitempty');
 				}
@@ -188,15 +211,14 @@ function jsonToGo(json, typename, flatten = true)
 			const keys = Object.keys(scope);
 			for (let i in keys)
 			{
-				const keyname = keys[i];
+				const keyname = getOriginalName(keys[i]);
 				indent(tabs);
 				const typename = format(keyname);
 				append(typename+" ");
 				parent = typename
-				parseScope(scope[keyname], depth);
-
+				parseScope(scope[keys[i]], depth);
 				append(' `json:"'+keyname);
-				if (omitempty && omitempty[keyname] === true)
+				if (omitempty && omitempty[keys[i]] === true)
 				{
 					append(',omitempty');
 				}
@@ -319,6 +341,58 @@ function jsonToGo(json, typename, flatten = true)
 			else
 				return sep + frag;
 		});
+	}
+
+	function uuidv4() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		  var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		  return v.toString(16);
+		});
+	}
+
+	function getOriginalName(unique) {
+		const reLiteralUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+		const uuidLength = 36;
+
+		if (unique.length >= uuidLength) {
+			const tail = unique.substr(-uuidLength);
+			if (reLiteralUUID.test(tail)) {
+				return unique.slice(0, -1 * (uuidLength + 1))
+			}
+		}
+		return unique
+	}
+
+	function compareObjects(objectA, objectB) {
+		const object = "[object Object]";
+		return Object.prototype.toString.call(objectA) === object
+			&& Object.prototype.toString.call(objectB) === object;
+	}
+
+	function compareObjectKeys(itemAKeys, itemBKeys) {
+		const lengthA = itemAKeys.length;
+		const lengthB = itemBKeys.length;
+
+		// nothing to compare, probably identical
+		if (lengthA == 0 && lengthB == 0)
+			return true;
+
+		// duh
+		if (lengthA != lengthB)
+			return false;
+
+		for (let item of itemAKeys) {
+			if (!itemBKeys.includes(item))
+				return false;
+		}
+		return true;
+	}
+
+	function formatScopeKeys(keys) {
+		for (let i in keys) {
+			keys[i] = format(keys[i]);
+		}
+		return keys
 	}
 }
 
