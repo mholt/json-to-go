@@ -27,7 +27,8 @@ $(function()
 			return;
 		}
 
-		let output = jsonToGo(input, "", !$('#inline').is(':checked'), false);
+		let goTypeName = document.querySelector("#type-name-input").value
+		let output = jsonToGo(input, goTypeName, !$('#inline').is(':checked'), false);
 
 		if (output.error)
 		{
