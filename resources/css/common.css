@@ -127,6 +127,17 @@ footer {
 	border: 1px solid purple;
 }
 
+.copy {
+	font-size: 14px;
+    padding: 5px;
+    background: #80808099;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.copy:hover {
+	background: #808080cf;
+}
+
 @media (max-width: 800px) {
 	.intro {
 		flex-direction: column;

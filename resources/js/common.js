@@ -140,6 +140,31 @@ $(function()
 		}
 		dark = !dark;
 	});
+
+	// Copy contents of the output to clipboard
+	$("#copy-btn").click(function() {
+		var elm = document.getElementById("output");
+
+		if(document.body.createTextRange) {
+			// for ie
+			var range = document.body.createTextRange();
+
+			range.moveToElementText(elm);
+			range.select();
+
+			document.execCommand("Copy");
+		} else if(window.getSelection) {
+			// other browsers
+			var selection = window.getSelection();
+			var range = document.createRange();
+
+			range.selectNodeContents(elm);
+			selection.removeAllRanges();
+			selection.addRange(range);
+
+			document.execCommand("Copy");
+		}
+	})
 });
 
 function constructJSONErrorHTML(rawErrorMessage, errorIndex, json) {
