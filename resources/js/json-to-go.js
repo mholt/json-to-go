@@ -396,13 +396,4 @@ function jsonToGo(json, typename, flatten = true)
 	}
 }
 
-if (typeof module != 'undefined') {
-    if (!module.parent) {
-        process.stdin.on('data', function(buf) {
-            const json = buf.toString('utf8')
-            console.log(jsonToGo(json).go)
-        })
-    } else {
-        module.exports = jsonToGo
-    }
-}
+module.exports = jsonToGo;

@@ -1,3 +1,11 @@
+const hljs = require("highlight.js/lib/highlight.js");
+// separately require languages
+hljs.registerLanguage("go", require("highlight.js/lib/languages/go"));
+
+const $ = require("jquery-slim");
+const gofmt = require("gofmt.js");
+const jsonToGo = require("./json-to-go");
+
 initAnalytics();
 
 function initAnalytics()

@@ -2,11 +2,7 @@ var CACHE = "v1.1"
 
 var filesToCache = [
     './',
-    './resources/js/jquery.min.js',
-    './resources/js/highlight.min.js',
-    './resources/js/json-to-go.js',
-    './resources/js/common.js',
-    './resources/js/gofmt.js',
+    './dist/js/app.js',
     './resources/css/tomorrow.highlight.css',
     './resources/css/common.css',
     './resources/images/json-to-go.png'
