@@ -284,11 +284,11 @@ function jsonToGo(json, typename, flatten = true)
 				else
 					return "string";
 			case "number":
-				if (val % 1 === 0)
+				if (val % 1 === 0) 
 				{
 					if (val > -2147483648 && val < 2147483647)
 						return "int";
-					else
+					else if (val > -9223372036854775808 && val < 9223372036854775807)
 						return "int64";
 				}
 				else
