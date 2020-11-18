@@ -12,6 +12,14 @@ Things to note:
 
 Contributions are welcome! Open a pull request to fix a bug, or open an issue to discuss a new feature or change.
 
+### Docker
+
+If you would like to run this locally, clone the repo and try it out with docker.
+
+```shell
+# docker build -t json-to-go:latest .
+# docker run -it --rm -p 9000:9000 json-to-go:latest
+```
 
 ### Credits
 
