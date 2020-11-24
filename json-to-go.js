@@ -328,7 +328,7 @@ function jsonToGo(json, typename, flatten = true)
 			"URI", "URL", "UTF8", "VM", "XML", "XMPP", "XSRF", "XSS"
 		];
 
-		return str.replace(/(^|[^a-zA-Z])([a-z]+)/g, function(unused, sep, frag)
+		return str.replace(/(^|[^a-zA-Z])((?:[a-z]|[A-Z])+)/g, function(unused, sep, frag)
 		{
 			if (commonInitialisms.indexOf(frag.toUpperCase()) >= 0)
 				return sep + frag.toUpperCase();
