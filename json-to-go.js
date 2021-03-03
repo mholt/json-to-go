@@ -320,6 +320,9 @@ function jsonToGo(json, typename, flatten = true)
 	// Proper cases a string according to Go conventions
 	function toProperCase(str)
 	{
+		// ensure that the SCREAMING_SNAKE_CASE is converted to snake_case
+		str=str.toLowerCase();
+		
 		// https://github.com/golang/lint/blob/5614ed5bae6fb75893070bdc0996a68765fdd275/lint.go#L771-L810
 		const commonInitialisms = [
 			"ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", 
