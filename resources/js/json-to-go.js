@@ -22,7 +22,7 @@ function jsonToGo(json, typename, flatten = true)
 
 	try
 	{
-		data = JSON.parse(json.replace(/\.0/g, ".1")); // hack that forces floats to stay as floats
+		data = JSON.parse(json.replace(/:(\s*\d*)\.0/g, ":$1.1")); // hack that forces floats to stay as floats
 		scope = data;
 	}
 	catch (e)
@@ -320,6 +320,9 @@ function jsonToGo(json, typename, flatten = true)
 	// Proper cases a string according to Go conventions
 	function toProperCase(str)
 	{
+		// ensure that the SCREAMING_SNAKE_CASE is converted to snake_case
+		str=str.toLowerCase();
+		
 		// https://github.com/golang/lint/blob/5614ed5bae6fb75893070bdc0996a68765fdd275/lint.go#L771-L810
 		const commonInitialisms = [
 			"ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", 
@@ -398,10 +401,21 @@ function jsonToGo(json, typename, flatten = true)
 
 if (typeof module != 'undefined') {
     if (!module.parent) {
-        process.stdin.on('data', function(buf) {
-            const json = buf.toString('utf8')
-            console.log(jsonToGo(json).go)
-        })
+        if (process.argv.length > 2 && process.argv[2] === '-big') {
+            bufs = []
+            process.stdin.on('data', function(buf) {
+                bufs.push(buf)
+            })
+            process.stdin.on('end', function() {
+                const json = Buffer.concat(bufs).toString('utf8')
+                console.log(jsonToGo(json).go)
+            })
+        } else {
+            process.stdin.on('data', function(buf) {
+                const json = buf.toString('utf8')
+                console.log(jsonToGo(json).go)
+            })
+        }
     } else {
         module.exports = jsonToGo
     }
