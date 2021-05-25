@@ -321,9 +321,9 @@ function jsonToGo(json, typename, flatten = true)
 	function toProperCase(str)
 	{
 		// ensure that the SCREAMING_SNAKE_CASE is converted to snake_case
-    if (str.match(/^[_A-Z0-9]+$/)) {
-      str=str.toLowerCase();
-    }
+		if (str.match(/^[_A-Z0-9]+$/)) {
+			str = str.toLowerCase();
+		}
 		
 		// https://github.com/golang/lint/blob/5614ed5bae6fb75893070bdc0996a68765fdd275/lint.go#L771-L810
 		const commonInitialisms = [
