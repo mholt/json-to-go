@@ -1,0 +1,23 @@
+{
+  "name": "json-to-go",
+  "version": "1.0.0",
+  "description": "[<img src=\"https://mholt.github.io/json-to-go/resources/images/json-to-go.png\" alt=\"JSON-to-Go converts JSON to a Go struct\"></a>](https://mholt.github.io/json-to-go)",
+  "main": "json-to-go.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mholt/json-to-go.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.mholton-to-go/issues"
+  },
+  "homepage": "https://github.mholton-to-go#readme",
+  "devDependencies": {
+    "@types/node": "^15.12.4"
+  }
+}
