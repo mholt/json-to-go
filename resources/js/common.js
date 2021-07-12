@@ -132,11 +132,11 @@ $(function()
 		if(!dark)
 		{
 			$("head").append("<link rel='stylesheet' href='resources/css/dark.css' id='dark-css'>");
-			$("#dark").html("light mode");
+			$("#dark").html("Light mode");
 		} else
 		{
 			$("#dark-css").remove();
-			$("#dark").html("dark mode");
+			$("#dark").html("Dark mode");
 		}
 		dark = !dark;
 	});
