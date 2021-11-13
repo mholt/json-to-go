@@ -227,7 +227,7 @@ function jsonToGo(json, typename, flatten = true, example = false)
 				{
 					append(',omitempty');
 				}
-				if (example && scope[keys[i]] != "" && typeof scope[keys[i]] != "object")
+				if (example && scope[keys[i]] !== "" && typeof scope[keys[i]] !== "object")
 				{
 					append('" example:"'+scope[keys[i]])
 				}
