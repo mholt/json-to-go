@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+const jsonToGo = require("../json-to-go.js");
+
+async function read(stream) {
+	const chunks = [];
+	for await (const chunk of stream) { 
+		chunks.push(chunk);
+	}
+	return Buffer.concat(chunks).toString('utf8');
+}
+
+(async function main() {
+	const input = await read(process.stdin);
+	const out = jsonToGo(input);
+	if (out.error) {
+		process.stderr.write(out.error + "\n");	
+		process.exit(4);
+	}
+
+	process.stdout.write(out.go + "\n");
+})();
