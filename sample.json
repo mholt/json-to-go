@@ -15,7 +15,8 @@
             "zipcode": "21229",
             "plus4_code": "3737",
             "delivery_point": "01",
-            "delivery_point_check_digit": "3"
+            "delivery_point_check_digit": "3",
+            "name":"agm"
         },
         "metadata": {
             "record_type": "S",
