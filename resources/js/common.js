@@ -27,7 +27,7 @@ $(function()
 			return;
 		}
 
-		let output = jsonToGo(input, "", !$('#inline').is(':checked'), false);
+		let output = jsonToGo(input, "", !$('#inline').is(':checked'), false, $('#omitempty').is(':checked'));
 
 		if (output.error)
 		{
@@ -95,7 +95,13 @@ $(function()
 	$('#inline').change(function()
 	{
 		doConversion();
-	})
+	});
+
+	// Also do conversion when omitempty preference changes
+	$('#omitempty').change(function()
+	{
+		doConversion();
+	});
 
 	// Highlights the output for the user
 	$('#output').click(function()
