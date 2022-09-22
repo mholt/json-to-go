@@ -62,7 +62,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 					else if (sliceType != thisType)
 					{
 						sliceType = mostSpecificPossibleGoType(thisType, sliceType);
-						if (sliceType == "interface{}")
+						if (sliceType == "any")
 							break;
 					}
 				}
@@ -130,9 +130,9 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 				}
 				else {
 					if (flatten && depth >= 2) {
-						appender(sliceType || "interface{}");
+						appender(sliceType || "any");
 					} else {
-						append(sliceType || "interface{}");
+						append(sliceType || "any");
 					}
 				}
 			}
@@ -316,7 +316,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 	function goType(val)
 	{
 		if (val === null)
-			return "interface{}";
+			return "any";
 
 		switch (typeof val)
 		{
@@ -342,7 +342,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 					return "slice";
 				return "struct";
 			default:
-				return "interface{}";
+				return "any";
 		}
 	}
 
@@ -356,7 +356,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 				&& typ2.substr(0, 5) == "float")
 			return typ2;
 		else
-			return "interface{}";
+			return "any";
 	}
 
 	// Proper cases a string according to Go conventions
