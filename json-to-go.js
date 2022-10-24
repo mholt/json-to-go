@@ -22,7 +22,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 
 	try
 	{
-		data = JSON.parse(json.replace(/:(\s*\d*)\.0/g, ":$1.1")); // hack that forces floats to stay as floats
+		data = JSON.parse(json.replace(/:(\s*-?\d*)\.0/g, ":$1.1")); // hack that forces floats to stay as floats
 		scope = data;
 	}
 	catch (e)
