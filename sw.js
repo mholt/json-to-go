@@ -1,4 +1,4 @@
-var CACHE = "v1.1"
+var CACHE = "v1.2"
 
 var filesToCache = [
     './',
@@ -9,6 +9,7 @@ var filesToCache = [
     './resources/js/gofmt.js',
     './resources/css/tomorrow.highlight.css',
     './resources/css/common.css',
+    './resources/css/dark.css',
     './resources/images/json-to-go.png'
 ]
 

@@ -132,10 +132,9 @@ $(function()
 		$('#input').text(stringify(sampleJson2)).keyup();
 	});
 
-	var dark = false;
-	$("#dark").click(function()
+	function renderThemeMode(dark)
 	{
-		if(!dark)
+		if(dark)
 		{
 			$("head").append("<link rel='stylesheet' href='resources/css/dark.css' id='dark-css'>");
 			$("#dark").html("Light mode");
@@ -144,7 +143,23 @@ $(function()
 			$("#dark-css").remove();
 			$("#dark").html("Dark mode");
 		}
-		dark = !dark;
+	}
+
+	renderThemeMode(localStorage.getItem("dark-mode") === "true");
+
+	$("#dark").click(function()
+	{
+		if(localStorage.getItem("dark-mode") === "true")
+		{
+			localStorage.setItem("dark-mode", "false")
+
+			renderThemeMode(false);
+		} else
+		{
+			localStorage.setItem("dark-mode", "true")
+
+			renderThemeMode(true);
+		}
 	});
 
 	// Copy contents of the output to clipboard
