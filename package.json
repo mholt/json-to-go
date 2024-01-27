@@ -1,0 +1,26 @@
+{
+  "name": "json-to-go",
+  "version": "1.0.0",
+  "description": "convert JSON to Go struct",
+  "homepage": "https://mholt.github.io/json-to-go/",
+  "author": {
+    "name": "Matt Holt",
+    "url": "https://matt.life"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mholt/json-to-go.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "json",
+    "go",
+    "golang"
+  ],
+  "main": "json-to-go.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "node json-to-go.test.js"
+  }
+}
