@@ -1,0 +1,27 @@
+{
+  "region": {
+      "identifier": {
+          "type": "ISO 3166-1",
+          "id": 234
+      },
+      "autonomous": true
+  },
+  "municipality": {
+      "identifier": {
+          "type": "local",
+          "name": "Tórshavn"
+      }
+  },
+  "building": {
+      "identifier": {
+          "postal": {
+              "type": "local",
+              "id": 100
+          },
+          "road": {
+              "name": "Gríms Kambansgøta",
+              "id": 1
+          }
+      }
+  }
+}

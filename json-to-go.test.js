@@ -149,9 +149,38 @@ function test(includeExampleData) {
       );
     }
   }
+  console.log(includeExampleData ? "done testing samples with data" : "done testing samples without data")
+}
 
-  console.log("done")
+function testFiles() {
+  const fs = require('fs');
+  const path = require('path');
+
+  const testCases = [
+    "duplicate-nested-objects"
+  ];
+
+  for (const testCase of testCases) {
+
+    try {
+      const jsonData = fs.readFileSync(path.join('tests', testCase + '.json'), 'utf8');
+      const expectedGoData = fs.readFileSync(path.join('tests', testCase + '.go'), 'utf8');
+      const got = jsonToGo(jsonData);
+      if (got.error) {
+        console.assert(!got.error, `format('${jsonData}'): ${got.error}`);
+      } else {
+        console.assert(
+          got.go === expectedGoData,
+          `format('${jsonData}'): \n\tgot:  ${quote(got.go)}\n\twant: ${quote(expectedGoData)}`
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  console.log("done testing files")
 }
 
 test(false);
 test(true)
+testFiles();
