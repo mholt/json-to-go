@@ -495,7 +495,35 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 
 if (typeof module != 'undefined') {
 	if (!module.parent) {
-		if (process.argv.length > 2 && process.argv[2] === '-big') {
+		let bigstdin = false
+		let filename = null
+
+		process.argv.forEach((val, index) => {
+			if (index < 2)
+				return
+
+			if (!val.startsWith('-')) {
+				filename = val
+				return
+			}
+
+			const argument = val.replace(/-/g, '')
+			if (argument === "big")
+				bigstdin = true
+			else {
+				console.error(`Unexpected argument ${val} received`)
+				process.exit(1)
+			}
+		})
+
+		if (filename) {
+			const fs = require('fs');
+			const json = fs.readFileSync(filename, 'utf8');
+			process.stdout.write(jsonToGo(json).go)
+			return
+		}
+
+		if (bigstdin) {
 			bufs = []
 			process.stdin.on('data', function(buf) {
 				bufs.push(buf)
@@ -504,16 +532,14 @@ if (typeof module != 'undefined') {
 				const json = Buffer.concat(bufs).toString('utf8')
 				process.stdout.write(jsonToGo(json).go)
 			})
-		} else if (process.argv.length === 3) {
-			const fs = require('fs');
-			const json = fs.readFileSync(process.argv[2], 'utf8');
-			process.stdout.write(jsonToGo(json).go)
-		} else {
-			process.stdin.on('data', function(buf) {
-				const json = buf.toString('utf8')
-				process.stdout.write(jsonToGo(json).go)
-			})
+			return
 		}
+
+		// read from stdin
+		process.stdin.on('data', function(buf) {
+			const json = buf.toString('utf8')
+			process.stdout.write(jsonToGo(json).go)
+		})
 	} else {
 		module.exports = jsonToGo
 	}

@@ -12,6 +12,27 @@ Things to note:
 
 Contributions are welcome! Open a pull request to fix a bug, or open an issue to discuss a new feature or change.
 
+### Usage
+
+- Read JSON file:
+
+  ```sh
+  node json-to-go.js sample.json
+  ```
+
+- Read JSON file from stdin:
+
+  ```sh
+  node json-to-go.js < sample.json
+  cat sample.json | node json-to-go.js
+  ```
+
+- Read large JSON file from stdin:
+
+  ```sh
+  node json-to-go.js --big < sample.json
+  cat sample.json | node json-to-go.js --big
+  ```
 
 ### Credits
 
