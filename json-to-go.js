@@ -349,6 +349,17 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 	// Determines the most appropriate Go type
 	function goType(val)
 	{
+		Number.prototype.numberOfDecimals = function () {
+			if(isNaN(this))	return NaN
+			if(!isFinite(this))	return Infinity
+			// example: 1 || 1e-1 || 4.361170766e+20
+			// try to split by "e" and "."
+			let exponentialString = this.toExponential().toString()
+			exponentialString = exponentialString.split("e")[0] || exponentialString
+			exponentialString = exponentialString.split(".")[1] || exponentialString
+			return exponentialString.length || 0;
+		}
+
 		if (val === null)
 			return "any";
 
@@ -360,15 +371,22 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 				else
 					return "string";
 			case "number":
-				if (val % 1 === 0)
-				{
-					if (val > -2147483648 && val < 2147483647)
-						return "int";
-					else
-						return "int64";
-				}
-				else
+				// avoid type "int", as its size is platform dependent
+				if (val % 1 === 0 && val >= -128 && val <= 127)
+					return "int8"
+				if (val % 1 === 0 && val >= -32768  && val <= 32767)
+					return "int16"
+				if (val % 1 === 0 && val >= -2147483648 && val <= 2147483647)
+					return "int32"
+				if (val % 1 === 0 && val >= -9223372036854775808 && val <= 9223372036854775807)
+					return "int64"
+				if (val.numberOfDecimals() <= 7 && val > -3.4e+38 && val < 3.4e+38)
+					return "float32"
+				if (val.numberOfDecimals() <= 15 && val > -1.7e+308 && val < +1.7e+308)
 					return "float64";
+
+				console.error(`Warning: can't find matching Golang number type for '${val}'. Falling back to "any".`)
+				return "any";
 			case "boolean":
 				return "bool";
 			case "object":

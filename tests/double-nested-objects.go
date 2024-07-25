@@ -7,13 +7,13 @@ type Type struct {
 	Long string `json:"long"`
 }
 type First struct {
-	ID int `json:"id"`
+	ID int8 `json:"id"`
 	Type Type `json:"type"`
 }
 type SecondType struct {
 	Long string `json:"long"`
 }
 type Second struct {
-	ID int `json:"id"`
+	ID int8 `json:"id"`
 	SecondType SecondType `json:"type"`
 }
