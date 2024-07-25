@@ -4,6 +4,7 @@ function quote(str) {
   return "'" + str
     .replace(/\t/g, "\\t")
     .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
     .replace(/'/g, "\\'") + "'"
 }
 
