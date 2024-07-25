@@ -111,6 +111,11 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 									continue
 								}
 
+								// if variable was first detected as int (7) and a second time as float64 (3.14)
+								// then we want to select float64, not int. Similar for int64 and float64.
+								if(areSameType(currentValue, 1))
+									allFields[keyname].value = findBestValueForNumberType(existingValue, currentValue);
+
 								if (areObjects(existingValue, currentValue)) {
 									const comparisonResult = compareObjectKeys(
 										Object.keys(currentValue),
@@ -387,6 +392,50 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 			default:
 				return "any";
 		}
+	}
+
+	// change the value to expand ints and floats to their larger equivalent
+	function findBestValueForNumberType(existingValue, newValue) {
+		if (!areSameType(newValue, 1)) {
+			console.error(`Error: currentValue ${newValue} is not a number`)
+			return null // falls back to goType "any"
+		}
+
+		const newGoType = goType(newValue)
+		const existingGoType = goType(existingValue)
+
+		if (newGoType === existingGoType)
+			return existingValue
+
+		// always upgrade float64
+		if (newGoType === "float64")
+			return newValue
+		if (existingGoType === "float64")
+			return existingValue
+
+		// it's too complex to distinguish int types and float32, so we force-upgrade to float64
+		// if anyone has a better suggestion, PRs are welcome!
+		if (newGoType.includes("float") && existingGoType.includes("int"))
+			return Number.MAX_VALUE
+		if (newGoType.includes("int") && existingGoType.includes("float"))
+			return Number.MAX_VALUE
+
+		if (newGoType.includes("int") && existingGoType.includes("int")) {
+			const existingValueAbs = Math.abs(existingValue);
+			const newValueAbs = Math.abs(newValue);
+
+			// if the sum is overflowing, it's safe to assume numbers are very large. So we force int64.
+			if (!isFinite(existingValueAbs + newValueAbs))
+				return Number.MAX_SAFE_INTEGER
+
+			// it's too complex to distinguish int8, int16, int32 and int64, so we just use the sum as best-guess
+			return existingValueAbs + newValueAbs;
+		}
+
+		// There should be other cases
+		console.error(`Error: something went wrong with findBestValueForNumberType() using the values: '${newValue}' and '${existingValue}'`)
+		console.error("       Please report the problem to https://github.com/mholt/json-to-go/issues")
+		return null // falls back to goType "any"
 	}
 
 	// Given two types, returns the more specific of the two

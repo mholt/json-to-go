@@ -162,6 +162,7 @@ function testFiles() {
   const testCases = [
     "duplicate-top-level-structs",
     "double-nested-objects",
+    "array-with-mixed-float-int",
     "array-with-nonmatching-types",
   ];
 
