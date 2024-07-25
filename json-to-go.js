@@ -102,7 +102,16 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 								const existingValue = allFields[keyname].value;
 								const currentValue = scope[i][keyname];
 
-								if (compareObjects(existingValue, currentValue)) {
+								if (!areSameType(existingValue, currentValue)) {
+									if(existingValue !== null) {
+										allFields[keyname].value = null // force type "any" if types are not identical
+										console.warn(`Warning: key "${keyname}" uses multiple types. Defaulting to type "any".`)
+									}
+									allFields[keyname].count++
+									continue
+								}
+
+								if (areObjects(existingValue, currentValue)) {
 									const comparisonResult = compareObjectKeys(
 										Object.keys(currentValue),
 										Object.keys(existingValue)
@@ -444,10 +453,17 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 		return unique
 	}
 
-	function compareObjects(objectA, objectB) {
+	function areObjects(objectA, objectB) {
 		const object = "[object Object]";
 		return Object.prototype.toString.call(objectA) === object
 			&& Object.prototype.toString.call(objectB) === object;
+	}
+
+	function areSameType(objectA, objectB) {
+		// prototype.toString required to compare Arrays and Objects
+		const typeA =  Object.prototype.toString.call(objectA)
+		const typeB = Object.prototype.toString.call(objectB)
+		return typeA === typeB
 	}
 
 	function compareObjectKeys(itemAKeys, itemBKeys) {
