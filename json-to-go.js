@@ -495,7 +495,6 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 
 if (typeof module != 'undefined') {
 	if (!module.parent) {
-		let bigstdin = false
 		let filename = null
 
 		function jsonToGoWithErrorHandling(json) {
@@ -518,7 +517,7 @@ if (typeof module != 'undefined') {
 
 			const argument = val.replace(/-/g, '')
 			if (argument === "big")
-				bigstdin = true
+				console.warn(`Warning: The argument '${argument}' has been deprecated and has no effect anymore`)
 			else {
 				console.error(`Unexpected argument ${val} received`)
 				process.exit(1)
@@ -532,7 +531,7 @@ if (typeof module != 'undefined') {
 			return
 		}
 
-		if (bigstdin) {
+		if (!filename) {
 			bufs = []
 			process.stdin.on('data', function(buf) {
 				bufs.push(buf)
@@ -543,12 +542,6 @@ if (typeof module != 'undefined') {
 			})
 			return
 		}
-
-		// read from stdin
-		process.stdin.on('data', function(buf) {
-			const json = buf.toString('utf8')
-			jsonToGoWithErrorHandling(json)
-		})
 	} else {
 		module.exports = jsonToGo
 	}

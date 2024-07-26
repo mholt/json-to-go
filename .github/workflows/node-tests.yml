@@ -37,15 +37,6 @@ jobs:
           echo "got: '${got}'"
           [[ "${got}" == "${exp}" ]]
 
-      - name: Run json-to-go with -big using stdin
-        shell: bash
-        run: |
-          set -eEuo pipefail
-          got=$(node json-to-go.js -big < tests/double-nested-objects.json)
-          exp=$(cat tests/double-nested-objects.go)
-          echo "got: '${got}'"
-          [[ "${got}" == "${exp}" ]]
-
       - name: Run json-to-go with a file
         shell: bash
         run: |
