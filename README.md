@@ -20,11 +20,23 @@ Contributions are welcome! Open a pull request to fix a bug, or open an issue to
   node json-to-go.js sample.json
   ```
 
+- Read JSON file on Unix systems:
+
+  ```sh
+  ./json-to-go.js sample.json
+  ```
+
 - Read JSON file from stdin:
 
   ```sh
-  node json-to-go.js < sample.json
-  cat sample.json | node json-to-go.js
+  ./json-to-go.js < sample.json
+  cat sample.json | ./json-to-go.js
+  ```
+
+- For more options, check the help page
+
+  ```sh
+  ./json-to-go.js --help
   ```
 
 ### Credits
