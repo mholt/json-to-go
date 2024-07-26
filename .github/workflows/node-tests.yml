@@ -54,3 +54,13 @@ jobs:
           exp=$(cat tests/double-nested-objects.go)
           echo "got: '${got}'"
           [[ "${got}" == "${exp}" ]]
+
+      - name: Check correct error handling using stdin
+        shell: bash
+        run: |
+          ! node json-to-go.js <<< "error"
+
+      - name: Check correct error handling with a file
+        shell: bash
+        run: |
+          ! node json-to-go.js <(echo "error")

@@ -498,6 +498,15 @@ if (typeof module != 'undefined') {
 		let bigstdin = false
 		let filename = null
 
+		function jsonToGoWithErrorHandling(json) {
+			const output = jsonToGo(json)
+			if (output.error) {
+				console.error(output.error)
+				process.exitCode = 1
+			}
+			process.stdout.write(output.go)
+		}
+
 		process.argv.forEach((val, index) => {
 			if (index < 2)
 				return
@@ -519,7 +528,7 @@ if (typeof module != 'undefined') {
 		if (filename) {
 			const fs = require('fs');
 			const json = fs.readFileSync(filename, 'utf8');
-			process.stdout.write(jsonToGo(json).go)
+			jsonToGoWithErrorHandling(json)
 			return
 		}
 
@@ -530,7 +539,7 @@ if (typeof module != 'undefined') {
 			})
 			process.stdin.on('end', function() {
 				const json = Buffer.concat(bufs).toString('utf8')
-				process.stdout.write(jsonToGo(json).go)
+				jsonToGoWithErrorHandling(json)
 			})
 			return
 		}
@@ -538,7 +547,7 @@ if (typeof module != 'undefined') {
 		// read from stdin
 		process.stdin.on('data', function(buf) {
 			const json = buf.toString('utf8')
-			process.stdout.write(jsonToGo(json).go)
+			jsonToGoWithErrorHandling(json)
 		})
 	} else {
 		module.exports = jsonToGo
