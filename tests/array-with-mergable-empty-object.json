@@ -1,0 +1,19 @@
+{
+	"booleanfield": true,
+	"somearray": [
+		{
+			"id": 1,
+			"name": "John Doe",
+			"features": {
+				"age": 49,
+				"height": 175
+			}
+		},
+		{
+			"id": 3,
+			"name": "John Doe",
+			"features": {}
+		}
+	],
+	"date": "2024-07-24"
+}

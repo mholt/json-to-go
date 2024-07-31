@@ -52,7 +52,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 	};
 
 
-	function parseScope(scope, depth = 0)
+	function parseScope(scope, depth = 0, forceOmitEmptyNonArrays = false)
 	{
 		if (typeof scope === "object" && scope !== null)
 		{
@@ -82,8 +82,11 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 					appender(slice);
 				else
 					append(slice)
+
+				// TODO: structs need a proper recursive solution to make merging generic
 				if (sliceType == "struct") {
 					const allFields = {};
+					let insideOmitEmpty = false;
 
 					// for each field counts how many times appears
 					for (let i = 0; i < scopeLength; i++)
@@ -117,6 +120,55 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 									allFields[keyname].value = findBestValueForNumberType(existingValue, currentValue);
 
 								if (areObjects(existingValue, currentValue)) {
+									const currentKeys = Object.keys(currentValue)
+									const existingKeys = Object.keys(existingValue)
+
+									// try to merge two object fields instead of creating separate ones
+									// TODO: find a proper handling of omitempty for nested structs instead of
+									//       fake-forcing omitempty on all nested elements
+									if (existingKeys.length > 0 && currentKeys.length > 0) {
+										if (!allOmitempty) {
+											// check if any of the existingKeys (which are assumed to be mandatory),
+											// is not in the currentKeys
+											for (const key of existingKeys) {
+												if (!Object.keys(currentKeys).includes(key)) {
+													insideOmitEmpty = true // TODO: only set this one key to omitempty
+													break
+												}
+											}
+										}
+
+										var mergedValues = existingValue
+										for (const key of currentKeys) {
+											// check if key has been found previously
+											if (!Object.keys(mergedValues).includes(key)) {
+												mergedValues[key] = currentValue[key]
+												insideOmitEmpty = true // TODO: only set this one key to omitempty
+												continue
+											}
+
+											// check if types between previously found values and the current value
+											if (!areSameType(mergedValues[key], currentValue[key])) {
+												if (mergedValues[key] !== null) {
+													mergedValues[key] = null // force type "any" if types are not identical
+													console.warn(`Warning: nested key "${key}" uses multiple types. Defaulting to type "any".`)
+												}
+											}
+										}
+
+										allFields[keyname].value = mergedValues;
+										allFields[keyname].count++;
+										continue;
+									}
+
+									// if both one of the two objects is empty assume they are identical
+									if (currentKeys.length == 0 && existingKeys.length > 0 ||
+										currentKeys.length > 0 && existingKeys.length == 0) {
+										allFields[keyname].count++;
+										insideOmitEmpty = true // as the whole object is empty, all nested elements are omitempty
+										continue;
+									}
+
 									const comparisonResult = compareObjectKeys(
 										Object.keys(currentValue),
 										Object.keys(existingValue)
@@ -144,7 +196,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 						struct[keyname] = elem.value;
 						omitempty[keyname] = elem.count != scopeLength;
 					}
-					parseStruct(depth + 1, innerTabs, struct, omitempty, previousParents); // finally parse the struct !!
+					parseStruct(depth + 1, innerTabs, struct, omitempty, previousParents, insideOmitEmpty); // finally parse the struct !!
 				}
 				else if (sliceType == "slice") {
 					parseScope(scope[0], depth)
@@ -167,7 +219,16 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 						append(parent)
 					}
 				}
-				parseStruct(depth + 1, innerTabs, scope, false, previousParents);
+
+				const omitempty = {};
+				if (forceOmitEmptyNonArrays) {
+					const allKeys = Object.keys(scope)
+					for (let k in allKeys) {
+						const keyname = allKeys[k];
+						omitempty[keyname] = true;
+					}
+				}
+				parseStruct(depth + 1, innerTabs, scope, omitempty, previousParents);
 			}
 		}
 		else {
@@ -180,7 +241,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 		}
 	}
 
-	function parseStruct(depth, innerTabs, scope, omitempty, oldParents)
+	function parseStruct(depth, innerTabs, scope, omitempty, oldParents, insideOmitEmpty)
 	{
 		if (flatten) {
 			stack.push(
@@ -226,7 +287,7 @@ function jsonToGo(json, typename, flatten = true, example = false, allOmitempty 
 
 				appender(typename+" ");
 				parent = typename
-				parseScope(scope[keys[i]], depth);
+				parseScope(scope[keys[i]], depth, insideOmitEmpty);
 				appender(' `json:"'+keyname);
 				if (allOmitempty || (omitempty && omitempty[keys[i]] === true))
 				{

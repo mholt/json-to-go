@@ -1,0 +1,29 @@
+{
+    "booleanfield": true,
+    "inconsistentarray": [
+        {
+            "id": 1,
+            "name": "John Doe",
+            "features": {
+                "age": 49,
+                "height": 175
+            }
+        },
+        {
+            "id": 2,
+            "name": "Jane Doe",
+            "features": {
+                "height": 164
+            }
+        },
+        {
+            "id": 3,
+            "name": "John Doe",
+            "features": {
+                "gender": "male",
+                "height": "unknown"
+            }
+        }
+    ],
+    "date": "2024-07-22"
+}

@@ -164,6 +164,8 @@ function testFiles() {
     "double-nested-objects",
     "array-with-mixed-float-int",
     "array-with-nonmatching-types",
+    "array-with-mergable-objects",
+    "array-with-mergable-empty-object",
   ];
 
   for (const testCase of testCases) {
